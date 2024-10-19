@@ -1,4 +1,4 @@
-package mapper
+package fixedlength
 
 import (
 	"reflect"
@@ -7,13 +7,13 @@ import (
 
 func TestUnmarshal(t *testing.T) {
 	type nested struct {
-		A string `map:"0,1"`
-		B int    `map:"2,3"`
+		A string `range:"0,1"`
+		B int    `range:"2,3"`
 		C float64
 	}
 
 	type testStruct struct {
-		Nested nested `map:"0,4"`
+		Nested nested `range:"0,4"`
 		Empty  string
 	}
 
@@ -51,8 +51,8 @@ func TestUnmarshalError(t *testing.T) {
 			t.Fatalf("Expected Unmarshal to fail")
 		}
 
-		if err.Error() != "map: Unmarshal(non-pointer int)" {
-			t.Errorf("Expected error to be 'map: Unmarshal(non-pointer int)', got '%s'", err.Error())
+		if err.Error() != "range: Unmarshal(non-pointer int)" {
+			t.Errorf("Expected error to be 'range: Unmarshal(non-pointer int)', got '%s'", err.Error())
 		}
 	})
 
@@ -63,8 +63,8 @@ func TestUnmarshalError(t *testing.T) {
 			t.Fatalf("Expected Unmarshal to fail")
 		}
 
-		if err.Error() != "map: Unmarshal(nil *int)" {
-			t.Errorf("Expected error to be 'map: Unmarshal(nil *int)', got '%s'", err.Error())
+		if err.Error() != "range: Unmarshal(nil *int)" {
+			t.Errorf("Expected error to be 'range: Unmarshal(nil *int)', got '%s'", err.Error())
 		}
 	})
 
@@ -75,8 +75,8 @@ func TestUnmarshalError(t *testing.T) {
 			t.Fatalf("Expected Unmarshal to fail")
 		}
 
-		if err.Error() != "map: Unmarshal(non-pointer struct {})" {
-			t.Errorf("Expected error to be 'map: Unmarshal(non-pointer struct {})', got '%s'", err.Error())
+		if err.Error() != "range: Unmarshal(non-pointer struct {})" {
+			t.Errorf("Expected error to be 'range: Unmarshal(non-pointer struct {})', got '%s'", err.Error())
 		}
 	})
 
@@ -86,8 +86,8 @@ func TestUnmarshalError(t *testing.T) {
 			t.Fatalf("Expected Unmarshal to fail")
 		}
 
-		if err.Error() != "map: Unmarshal(nil)" {
-			t.Errorf("Expected error to be 'map: Unmarshal(non-pointer struct {})', got '%s'", err.Error())
+		if err.Error() != "range: Unmarshal(nil)" {
+			t.Errorf("Expected error to be 'range: Unmarshal(non-pointer struct {})', got '%s'", err.Error())
 		}
 	})
 }

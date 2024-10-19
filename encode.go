@@ -1,4 +1,4 @@
-package mapper
+package fixedlength
 
 import (
 	"errors"
@@ -8,10 +8,10 @@ import (
 )
 
 var (
-	ErrInvalidBooleanValue = errors.New("mapper: invalid boolean value")
-	ErrInvalidIntValue     = errors.New("mapper: invalid int value")
-	ErrInvalidFloatValue   = errors.New("mapper: invalid float value")
-	ErrUnsupportedKind     = errors.New("mapper: unsupported kind")
+	ErrInvalidBooleanValue = errors.New("fixedlength: invalid boolean value")
+	ErrInvalidIntValue     = errors.New("fixedlength: invalid int value")
+	ErrInvalidFloatValue   = errors.New("fixedlength: invalid float value")
+	ErrUnsupportedKind     = errors.New("fixedlength: unsupported kind")
 )
 
 // setFieldValue sets the value for a struct field using reflection.

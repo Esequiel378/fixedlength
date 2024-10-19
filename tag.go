@@ -1,4 +1,4 @@
-package mapper
+package fixedlength
 
 import (
 	"errors"
@@ -8,10 +8,10 @@ import (
 )
 
 var (
-	ErrTagInefectualRange    = errors.New("mapper: inefectual range")
-	ErrTagEmpty              = errors.New("mapper: tag is empty")
-	ErrTagInvalidRangeValues = errors.New("mapper: invalid range values")
-	ErrTagInvalidUpperBound  = errors.New("mapper: invalid upper bound")
+	ErrTagInefectualRange    = errors.New("fixedlength: inefectual range")
+	ErrTagEmpty              = errors.New("fixedlength: tag is empty")
+	ErrTagInvalidRangeValues = errors.New("fixedlength: invalid range values")
+	ErrTagInvalidUpperBound  = errors.New("fixedlength: invalid upper bound")
 )
 
 // parseTag splits a struct field's json tag into its name and

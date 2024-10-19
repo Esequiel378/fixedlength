@@ -1,6 +1,6 @@
-# mapper
+# fixedlength
 
-**mapper** is a Go library that unmarshals raw, unformatted text into Go structs by mapping data to specific ranges within a line. This is especially useful for parsing fixed-width fields in text files or other unstructured data formats where fields are defined by their byte positions rather than delimiters.
+**fixedlength** is a Go library that unmarshals raw, unformatted text into Go structs by mapping data to specific ranges within a line. This is especially useful for parsing fixed-width fields in text files or other unstructured data formats where fields are defined by their byte positions rather than delimiters.
 
 The library supports custom field unmarshalling via the `Unmarshaler` interface, allowing for flexible handling of nested structs or specific data types.
 
@@ -13,10 +13,10 @@ The library supports custom field unmarshalling via the `Unmarshaler` interface,
 
 ## Struct Tags
 
-The struct field tags for `mapper` are in the format:
+The struct field tags for `fixedlength` are in the format:
 
 ```go
-`map:"start,end"`
+`range:"start,end"`
 ```
 
 - **start**: The starting byte index (inclusive).
@@ -32,14 +32,14 @@ type Unmarshaler interface {
 }
 ```
 
-If a struct field implements this interface, `mapper` will call its `Unmarshal` method during the unmarshalling process, allowing you to define custom parsing logic for that field.
+If a struct field implements this interface, `fixedlength` will call its `Unmarshal` method during the unmarshalling process, allowing you to define custom parsing logic for that field.
 
 ## Installation
 
 You can install the library using Go modules:
 
 ```bash
-go get -u github.com/esequiel378/mapper
+go get -u github.com/esequiel378/fixedlength
 ```
 
 ## Getting Started
@@ -65,7 +65,7 @@ import (
 	"log"
 	"strings"
 
-	"mapper"
+	"fixedlength"
 )
 
 var input = `
@@ -75,10 +75,10 @@ Emma Ward           200307137778889991200.00
 `
 
 type Person struct {
-	FullName  string  `map:"0,20"`
-	BirthDate string  `map:"20,28"`
-	SSN       string  `map:"28,37"`
-	Income    float64 `map:"37,-1"`  // -1 means till the end of the line
+	FullName  string  `range:"0,20"`
+	BirthDate string  `range:"20,28"`
+	SSN       string  `range:"28,37"`
+	Income    float64 `range:"37,-1"`  // -1 means till the end of the line
 }
 
 func main() {
@@ -90,7 +90,7 @@ func main() {
 		}
 
 		var p Person
-		err := mapper.Unmarshal(scanner.Bytes(), &p)
+		err := fixedlength.Unmarshal(scanner.Bytes(), &p)
 		if err != nil {
 			log.Fatalf("Unmarshal failed: %v", err)
 		}
@@ -99,7 +99,7 @@ func main() {
 }
 ```
 
-In this example, the struct tag `map:"start,end"` is used to indicate the byte range for each field.
+In this example, the struct tag `range:"start,end"` is used to indicate the byte range for each field.
 
 ### Example 2: Custom Unmarshaling with Nested Structs
 
@@ -115,7 +115,7 @@ import (
 	"strings"
 	"time"
 
-	"mapper"
+	"fixedlength"
 )
 
 var input = `
@@ -128,7 +128,7 @@ type PersonBirthDate struct {
 	time.Time
 }
 
-var _ mapper.Unmarshaler = (*PersonBirthDate)(nil)
+var _ fixedlength.Unmarshaler = (*PersonBirthDate)(nil)
 
 func (p *PersonBirthDate) Unmarshal(data []byte) error {
 	birthDate, err := time.Parse("20060102", string(data))  // Parses date as YYYYMMDD
@@ -140,10 +140,10 @@ func (p *PersonBirthDate) Unmarshal(data []byte) error {
 }
 
 type Person struct {
-	FullName  string          `map:"0,20"`
-	BirthDate PersonBirthDate `map:"20,28"`
-	SSN       string          `map:"28,37"`
-	Income    float64         `map:"37,-1"`
+	FullName  string          `range:"0,20"`
+	BirthDate PersonBirthDate `range:"20,28"`
+	SSN       string          `range:"28,37"`
+	Income    float64         `range:"37,-1"`
 }
 
 func main() {
@@ -155,7 +155,7 @@ func main() {
 		}
 
 		var p Person
-		err := mapper.Unmarshal(scanner.Bytes(), &p)
+		err := fixedlength.Unmarshal(scanner.Bytes(), &p)
 		if err != nil {
 			log.Fatalf("Unmarshal failed: %v", err)
 		}
@@ -168,7 +168,7 @@ In this case, the `PersonBirthDate` struct implements the `Unmarshaler` interfac
 
 ## Testing
 
-You can run the tests for the `mapper` library with:
+You can run the tests for the `fixedlength` library with:
 
 ```bash
 go test -v ./...

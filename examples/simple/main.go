@@ -6,7 +6,7 @@ import (
 	"log"
 	"strings"
 
-	"mapper"
+	"fixedlength"
 )
 
 var input = `
@@ -18,10 +18,10 @@ Amelia Ross         19861127666555444400.45
 `
 
 type Person struct {
-	FullName  string  `map:"0,20"`
-	BirthDate string  `map:"20,28"`
-	SSN       string  `map:"28,37"`
-	Income    float64 `map:"37,-1"`
+	FullName  string  `range:"0,20"`
+	BirthDate string  `range:"20,28"`
+	SSN       string  `range:"28,37"`
+	Income    float64 `range:"37,-1"`
 }
 
 func main() {
@@ -33,7 +33,7 @@ func main() {
 		}
 
 		var p Person
-		err := mapper.Unmarshal(scanner.Bytes(), &p)
+		err := fixedlength.Unmarshal(scanner.Bytes(), &p)
 		if err != nil {
 			log.Fatalf("Unmarshal failed: %v", err)
 		}

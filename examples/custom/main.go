@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"mapper"
+	"fixedlength"
 )
 
 var input = `
@@ -22,7 +22,7 @@ type PersonBirthDate struct {
 	time.Time
 }
 
-var _ mapper.Unmarshaler = (*PersonBirthDate)(nil)
+var _ fixedlength.Unmarshaler = (*PersonBirthDate)(nil)
 
 func (p *PersonBirthDate) Unmarshal(data []byte) error {
 	// Parse the birth date
@@ -39,10 +39,10 @@ func (p *PersonBirthDate) Unmarshal(data []byte) error {
 }
 
 type Person struct {
-	FullName  string          `map:"0,20"`
-	BirthDate PersonBirthDate `map:"20,28"`
-	SSN       string          `map:"28,37"`
-	Income    float64         `map:"37,-1"`
+	FullName  string          `range:"0,20"`
+	BirthDate PersonBirthDate `range:"20,28"`
+	SSN       string          `range:"28,37"`
+	Income    float64         `range:"37,-1"`
 }
 
 func main() {
@@ -54,7 +54,7 @@ func main() {
 		}
 
 		var p Person
-		err := mapper.Unmarshal(scanner.Bytes(), &p)
+		err := fixedlength.Unmarshal(scanner.Bytes(), &p)
 		if err != nil {
 			log.Fatalf("Unmarshal failed: %v", err)
 		}
