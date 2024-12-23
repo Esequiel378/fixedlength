@@ -160,3 +160,39 @@ func TestImplementsUnmarshaler(t *testing.T) {
 		}
 	})
 }
+
+// ABCCustom accepts ABC strings, any other value will be ignored
+// and the value will be set to an empty string.
+type ABCCustom string
+
+var _ Unmarshaler = (*ABCCustom)(nil)
+
+func (ac *ABCCustom) Unmarshal(data []byte) error {
+	if string(data) == "ABC" {
+		*ac = ABCCustom(data)
+	}
+
+	return nil
+}
+
+func TestTypeAliasesWithCustomUnmarshaler(t *testing.T) {
+	type TestStruct struct {
+		A ABCCustom `range:"0,3"`
+		B int       `range:"3,-1"`
+	}
+
+	data := []byte("ABC12")
+	var v TestStruct
+	err := Unmarshal(data, &v)
+	if err != nil {
+		t.Fatalf("Unmarshal failed: %v", err)
+	}
+
+	if v.A != "ABC" {
+		t.Errorf("Expected v.A to be 'ABC', got '%s'", v.A)
+	}
+
+	if v.B != 12 {
+		t.Errorf("Expected v.B to be 12, got %d", v.B)
+	}
+}
