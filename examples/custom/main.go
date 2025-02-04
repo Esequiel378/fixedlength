@@ -11,38 +11,38 @@ import (
 )
 
 var input = `
-Olivia Parker       199703221112223331550.85   
-Liam Evans          19891008444555666675.25   
-Emma Ward           200307137778889991200.00  
-Noah Scott          19910601333222555999.99   
-Amelia Ross         19861127666555444400.45   
+Olivia Parker       199703221112223331550.85
+Liam Evans          19891008444555666675.25
+Emma Ward                   7778889991200.00
+Noah Scott          19910601333222555999.99
+Amelia Ross         19861127666555444400.45
 `
 
-type PersonBirthDate struct {
-	time.Time
-}
+type PersonBirthDate time.Time
 
 var _ fixedlength.Unmarshaler = (*PersonBirthDate)(nil)
 
 func (p *PersonBirthDate) Unmarshal(data []byte) error {
+	if len(data) != 8 {
+		return nil
+	}
+
 	// Parse the birth date
 	birthDate, err := time.Parse("20060102", string(data))
 	if err != nil {
 		return err
 	}
 
-	*p = PersonBirthDate{
-		Time: birthDate,
-	}
+	*p = PersonBirthDate(birthDate)
 
 	return nil
 }
 
 type Person struct {
-	FullName  string          `range:"0,20"`
-	BirthDate PersonBirthDate `range:"20,28"`
-	SSN       string          `range:"28,37"`
-	Income    float64         `range:"37,-1"`
+	FullName  string           `range:"0,20"`
+	BirthDate *PersonBirthDate `range:"20,28"`
+	SSN       string           `range:"28,37"`
+	Income    float64          `range:"37,-1"`
 }
 
 func main() {
