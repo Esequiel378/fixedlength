@@ -188,7 +188,7 @@ func TestSetFieldValue(t *testing.T) {
 			kind:          reflect.Uint,
 			value:         "-42",
 			wantElemValue: uint(0),
-			wantErr:       ErrInvalidIntValue,
+			wantErr:       ErrInvalidUintValue,
 		},
 		{
 			name:          "valid_uint8",
@@ -201,7 +201,7 @@ func TestSetFieldValue(t *testing.T) {
 			kind:          reflect.Uint8,
 			value:         "256",
 			wantElemValue: uint8(0),
-			wantErr:       ErrInvalidIntValue,
+			wantErr:       ErrInvalidUintValue,
 		},
 		{
 			name:          "valid_uint16",
@@ -214,7 +214,7 @@ func TestSetFieldValue(t *testing.T) {
 			kind:          reflect.Uint16,
 			value:         "65536",
 			wantElemValue: uint16(0),
-			wantErr:       ErrInvalidIntValue,
+			wantErr:       ErrInvalidUintValue,
 		},
 		{
 			name:          "valid_uint32",
@@ -227,7 +227,7 @@ func TestSetFieldValue(t *testing.T) {
 			kind:          reflect.Uint32,
 			value:         "4294967296",
 			wantElemValue: uint32(0),
-			wantErr:       ErrInvalidIntValue,
+			wantErr:       ErrInvalidUintValue,
 		},
 		{
 			name:          "valid_uint64",
@@ -240,7 +240,7 @@ func TestSetFieldValue(t *testing.T) {
 			kind:          reflect.Uint64,
 			value:         "18446744073709551616",
 			wantElemValue: uint64(0),
-			wantErr:       ErrInvalidIntValue,
+			wantErr:       ErrInvalidUintValue,
 		},
 		{
 			name:          "valid_uintptr",
